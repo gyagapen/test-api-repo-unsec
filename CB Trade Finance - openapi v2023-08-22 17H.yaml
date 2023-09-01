@@ -1,0 +1,471 @@
+---
+openapi: 3.0.0
+info:
+  title: CB Trade Finance Service - Integration API
+  description: |
+    Core Banking Trade Finance Service - Integration API
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: TechArchitectureChapter@mcb.mu
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Doc Repo
+  url: https://izone2/site/OS/architecture/integration/Standards/Forms/AllItems.aspx?RootFolder=%2fsite%2fOS%2farchitecture%2fintegration%2fStandards%2f0%20Service%20Interface%20Def%2fSID%2fCore%20Banking%20Services%2f06%20Core%20Banking%20-%20Trade%20Finance%20Service
+servers:
+- url: https://virtserver.swaggerhub.com/YMALLECKAHMED/cb-tradefinance-service/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: "https://{env}.corebanking.mcb.local/tradefinance-service/integration-api/{version}"
+  variables:
+    env:
+      default: api
+      enum:
+      - api
+      - api.dev
+      - api.staging
+    version:
+      default: 1.0.0
+tags:
+- name: create_ImportLC
+  description: Create Import LC
+  externalDocs:
+    description: Business Rules
+    url: https://izone2/site/OS/architecture/integration/Standards/Forms/AllItems.aspx?RootFolder=%2fsite%2fOS%2farchitecture%2fintegration%2fStandards%2f0%20Service%20Interface%20Def%2fSID%2fCore%20Banking%20Services%2f06%20Core%20Banking%20-%20Trade%20Finance%20Service%2fcreate_importLC
+- name: update_ImportLC
+  description: Update Import LC
+  externalDocs:
+    description: Business Rules
+    url: https://izone2/site/OS/architecture/integration/Standards/Forms/AllItems.aspx?RootFolder=%2fsite%2fOS%2farchitecture%2fintegration%2fStandards%2f0%20Service%20Interface%20Def%2fSID%2fCore%20Banking%20Services%2f06%20Core%20Banking%20-%20Trade%20Finance%20Service
+- name: get_byExtId
+  description: Get LC by External Id
+  externalDocs:
+    description: Business Rules
+    url: https://izone2/site/OS/architecture/integration/Standards/Forms/AllItems.aspx?RootFolder=%2fsite%2fOS%2farchitecture%2fintegration%2fStandards%2f0%20Service%20Interface%20Def%2fSID%2fCore%20Banking%20Services%2f06%20Core%20Banking%20-%20Trade%20Finance%20Service
+- name: get_byId
+  description: Get LC by Internal Id
+  externalDocs:
+    description: Business Rules
+    url: https://izone2/site/OS/architecture/integration/Standards/Forms/AllItems.aspx?RootFolder=%2fsite%2fOS%2farchitecture%2fintegration%2fStandards%2f0%20Service%20Interface%20Def%2fSID%2fCore%20Banking%20Services%2f06%20Core%20Banking%20-%20Trade%20Finance%20Service
+paths:
+  /lc/imports:
+    post:
+      tags:
+      - create_ImportLC
+      summary: Create an Import LC
+      operationId: create_ImportLC
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LC_Import_Details_Type_CREATE'
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LC_Details_Type'
+        "400":
+          description: Client Request Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+      security:
+      - tradefinance_auth:
+        - lc:read
+        - lc:write
+  /lc/imports/validate:
+    post:
+      tags:
+      - create_ImportLC
+      summary: Validate Creation of an Import LC
+      operationId: validate_create_ImportLC
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LC_Import_Details_Type_CREATE'
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LC_Details_Type'
+        "400":
+          description: Client Request Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+      security:
+      - tradefinance_auth:
+        - lc:read
+        - lc:write
+  /lc/imports/{lc_bnk_ref}:
+    post:
+      tags:
+      - update_ImportLC
+      summary: Update an Import LC
+      operationId: update_ImportLC
+      parameters:
+      - name: lc_bnk_ref
+        in: path
+        description: ID of Import LC to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/LC_Bnk_Ref_Type'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LC_Import_Details_Type'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LC_Details_Type'
+        "400":
+          description: Client Request Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+      security:
+      - tradefinance_auth:
+        - lc:read
+        - lc:write
+  /lcs:
+    get:
+      tags:
+      - get_byExtId
+      summary: Get by External Id
+      operationId: get_byExtId
+      parameters:
+      - name: ext_id
+        in: query
+        description: External Id used when LC was created
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/Ext_Id_Type'
+      responses:
+        "200":
+          description: Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LC_Details_Type'
+        "204":
+          description: Not Found
+        "400":
+          description: Client Request Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+      security:
+      - tradefinance_auth:
+        - lc:read
+  /lcs/{lc_bnk_ref}:
+    get:
+      tags:
+      - get_byId
+      summary: Get by Internal Id
+      operationId: get_byId
+      parameters:
+      - name: lc_bnk_ref
+        in: path
+        description: (Internal) Id of LC
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/LC_Bnk_Ref_Type'
+      responses:
+        "200":
+          description: Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LC_Details_Type'
+        "204":
+          description: Not Found
+        "400":
+          description: Client Request Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+            text/plain:
+              schema:
+                type: string
+                nullable: true
+      security:
+      - tradefinance_auth:
+        - lc:read
+components:
+  schemas:
+    Errors_Type:
+      type: array
+      items:
+        $ref: '#/components/schemas/Errors_Type_inner'
+    Warnings_Type:
+      properties:
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Warnings_Type_warnings'
+      readOnly: true
+    LC_Bnk_Ref_Type:
+      maxLength: 12
+      minLength: 1
+      type: string
+      nullable: false
+    Ext_Id_Type:
+      required:
+      - entity_id
+      - source
+      properties:
+        source:
+          minLength: 1
+          type: string
+          nullable: false
+        entity_id:
+          minLength: 1
+          type: string
+          nullable: false
+    LC_Ext_Id_Type:
+      required:
+      - ext_id
+      properties:
+        ext_id:
+          $ref: '#/components/schemas/Ext_Id_Type'
+    LC_Header_Type:
+      required:
+      - category
+      - category_desc
+      - id
+      - lc_family
+      - lc_sub_family
+      - lc_type
+      - lc_type_desc
+      - ssc_category_desc
+      properties:
+        id:
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/LC_Bnk_Ref_Type'
+        lc_family:
+          type: string
+          nullable: true
+          readOnly: true
+          enum:
+          - IMPORT
+          - EXPORT
+        lc_sub_family:
+          type: string
+          nullable: false
+          enum:
+          - SIGHT
+          - USANCE
+          - NEGO
+          - MIXED
+        lc_type:
+          maxLength: 4
+          minLength: 1
+          type: string
+          nullable: false
+        lc_type_desc:
+          type: string
+          nullable: false
+          readOnly: true
+        category:
+          maxLength: 9
+          minLength: 1
+          type: string
+          nullable: false
+          readOnly: true
+        category_desc:
+          type: string
+          nullable: false
+          readOnly: true
+        ssc_category_desc:
+          type: string
+          nullable: false
+          readOnly: true
+    LC_Import_Specifics_Type:
+      required:
+      - import_dummy
+      type: object
+      properties:
+        import_dummy:
+          minLength: 1
+          type: string
+          nullable: false
+    LC_Export_Specifics_Type:
+      required:
+      - export_dummy
+      type: object
+      properties:
+        export_dummy:
+          minLength: 1
+          type: string
+          nullable: false
+    LC_Import_Details_Type:
+      allOf:
+      - $ref: '#/components/schemas/LC_Header_Type'
+      - $ref: '#/components/schemas/LC_Import_Specifics_Type'
+    LC_Export_Details_Type:
+      allOf:
+      - $ref: '#/components/schemas/LC_Header_Type'
+      - $ref: '#/components/schemas/LC_Export_Specifics_Type'
+    LC_Details_Type:
+      discriminator:
+        propertyName: lc_family
+        mapping:
+          IMPORT: '#/components/schemas/LC_Import_Details_Type'
+          EXPORT: '#/components/schemas/LC_Export_Details_Type'
+      allOf:
+      - $ref: '#/components/schemas/Warnings_Type'
+      - $ref: '#/components/schemas/LC_Ext_Id_Type'
+      oneOf:
+      - $ref: '#/components/schemas/LC_Import_Details_Type'
+      - $ref: '#/components/schemas/LC_Export_Details_Type'
+    LC_Import_Details_Type_CREATE:
+      allOf:
+      - $ref: '#/components/schemas/LC_Ext_Id_Type'
+      - $ref: '#/components/schemas/LC_Import_Details_Type'
+    inline_response_400:
+      allOf:
+      - $ref: '#/components/schemas/Errors_Type'
+      - example:
+        - code: CLIENT_REQ_ERROR
+          msg: LC Type is not valid
+    inline_response_500:
+      allOf:
+      - $ref: '#/components/schemas/Errors_Type'
+      - example:
+        - code: SERVER_ERROR
+    inline_response_400_1:
+      allOf:
+      - $ref: '#/components/schemas/Errors_Type'
+      - example:
+        - code: CLIENT_REQ_ERROR
+    Errors_Type_inner:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          minLength: 1
+          type: string
+          nullable: false
+        msg:
+          minLength: 1
+          type: string
+          nullable: false
+    Warnings_Type_warnings:
+      required:
+      - msg
+      type: object
+      properties:
+        code:
+          minLength: 1
+          type: string
+          nullable: false
+        msg:
+          minLength: 1
+          type: string
+          nullable: false
+        group:
+          minLength: 1
+          type: string
+          nullable: false
+  securitySchemes:
+    tradefinance_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://petstore.swagger.io/oauth/dialog
+          scopes:
+            lc:write: create and update lc
+            lc:read: read lc
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
